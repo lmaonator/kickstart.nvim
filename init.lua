@@ -27,7 +27,33 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+
+vim.g.clipboard = {
+  name = 'WslClipboard',
+  copy = {
+    ['+'] = 'clip.exe',
+    ['*'] = 'clip.exe',
+  },
+  paste = {
+    ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  },
+  cache_enabled = 0,
+}
+
+-- sync with system clipboard on focus
+vim.api.nvim_create_autocmd({ 'FocusGained' }, {
+  pattern = { '*' },
+  command = [[call setreg("@", getreg("+"))]],
+})
+
+-- sync with system clipboard on focus
+vim.api.nvim_create_autocmd({ 'FocusLost' }, {
+  pattern = { '*' },
+  command = [[call setreg("+", getreg("@"))]],
+})
+
+vim.opt.clipboard = ''
 
 -- Enable break indent
 vim.opt.breakindent = true
