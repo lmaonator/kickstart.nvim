@@ -19,6 +19,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.colorcolumn = '80'
+vim.opt.fileformats = 'unix,dos'
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -550,6 +551,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'markdownlint',
+        'flake8',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -602,6 +604,14 @@ require('lazy').setup({
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
         markdown = { 'markdownlint' },
         javascript = { 'biome', 'ts_ls', stop_after_first = true },
+      },
+      formatters = {
+        isort = {
+          command = 'isort',
+          args = {
+            '-',
+          },
+        },
       },
     },
   },
